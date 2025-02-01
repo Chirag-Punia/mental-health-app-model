@@ -11,7 +11,7 @@ class RAGPipeline:
         # Initialize Pinecone client
         self.pc = pinecone.Pinecone(api_key=config.pinecone_api)
         self.index = self.pc.Index(config.index_name)
-    
+
     def retrieve_context(self, query: str) -> str:
         """Retrieve context from Pinecone or web search."""
         # Step 1: Search Pinecone
@@ -39,33 +39,27 @@ class RAGPipeline:
         results = GoogleSearch(params).get_dict()
         return "\n".join([r.get("snippet", "") for r in results.get("organic_results", [])])
     
-
     def generate_response(self, query: str, context: str) -> str:
-        """Generate a response using Gemini."""
+        """Generate a response using Gemini, including conversation history and helpful advice."""
         prompt = f"""
-        You are a compassionate and supportive mental health assistant, designed to provide encouragement, empathy, and guidance. 
-        
-        **User Query:**  
+        You are a mental health assistant. Respond to this query:
         {query}
         
-        **Context (Background Information):**  
+        Context:
         {context}
-
-        **Guidelines for Your Response:**  
-        - Be **empathetic, understanding, and non-judgmental**.  
-        - Use **reassuring and supportive** language.  
-        - **Acknowledge** the user's emotions and validate their feelings.  
-        - **Encourage self-care** and positive coping mechanisms.  
-        - **Do not provide medical advice** or diagnose conditions.  
-        - If the user requires professional help, gently **suggest seeking a licensed therapist**.  
-        - If unsure or the topic is beyond your expertise, respond with:  
-        *"I'm here to support you, but I’m not qualified to provide medical advice. I recommend speaking with a mental health professional."*
         
-        **Example Response Style:**  
-        - "I hear you. That sounds really challenging, and I want you to know you're not alone."  
-        - "It's completely understandable to feel this way. Taking small steps, like talking to someone you trust, can be really helpful."  
-        - "If this is overwhelming, reaching out to a therapist could be a great step. You're doing the right thing by seeking support."  
-
-        Now, respond thoughtfully based on the query and context.
+        Rules:
+        - Be empathetic and supportive.
+        - Provide practical self-help strategies and general tips when possible.
+        - Recommend seeking professional help only if the situation seems severe or unmanageable.
+        - Never give medical advice.
+        - If unsure, say "I'm not qualified to answer that."
+        - Maintain context from previous messages in the conversation.
+        
+        Format:
+        - Start with an empathetic acknowledgment.
+        - Offer general self-help techniques (e.g., breathing exercises, journaling, mindfulness).
+        - If the issue seems severe, suggest seeking professional help in a compassionate manner.
         """
+
         return genai.GenerativeModel('gemini-pro').generate_content(prompt).text
