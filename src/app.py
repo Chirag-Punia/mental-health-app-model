@@ -20,7 +20,7 @@ sessions: dict[str, list[str]] = {}
 
 class ChatRequest(BaseModel):
     query: str
-    session_id: str | None = None  # Optional session ID
+    session_id: str 
 
 class ChatResponse(BaseModel):
     response: str
