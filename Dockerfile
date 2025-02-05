@@ -5,9 +5,6 @@ FROM python:3.9-slim
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PORT=8080 \
-    PINECONE_API="pcsk_BUbYK_Pyudx3Gerwnm5nqrrfwisv4D5tbqnsxZnqrXWrE1zYBzohG8z2hDbjKJqsAZGzz" \
-    GEMINI_API="AIzaSyCTyXXx0qZ6IzFNCJsU0W_DK3MJngsYudA" \
-    SERPAPI_API="51bf1cded96c34b5bba5c63ac22961b36ebbad101281986be58406b940a8a893"
 
 # Set working directory in container
 WORKDIR /app
