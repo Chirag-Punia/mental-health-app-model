@@ -4,7 +4,7 @@ FROM python:3.9-slim
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PORT=8080 \
+    PORT=8080 
 
 # Set working directory in container
 WORKDIR /app
